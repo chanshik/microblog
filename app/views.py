@@ -63,22 +63,24 @@ def after_login(resp):
 
         return redirect(url_for('login'))
 
-    user = User.query.filter_by(email=resp.email).first()
-    if user is None:
+    u = User.query.filter_by(email=resp.email).first()
+    if u is None:
         nickname = resp.nickname
         if nickname is None or nickname == "":
             nickname = resp.email.split('@')[0]
 
-        user = User(nickname=nickname, email=resp.email, role=ROLE_USER)
+        nickname = User.make_unique_nickname(nickname)
 
-        db.session.add(user)
+        u = User(nickname=nickname, email=resp.email, role=ROLE_USER)
+
+        db.session.add(u)
         db.session.commit()
 
     if 'remember_me' in session:
         remember_me = session['remember_me']
         session.pop('remember_me', None)
 
-    login_user(user, remember=remember_me)
+    login_user(u, remember=remember_me)
 
     return redirect(request.args.get('next') or url_for('index'))
 
@@ -98,27 +100,27 @@ def logout():
 @app.route('/user/<nickname>')
 @login_required
 def user(nickname):
-    user = User.query.filter_by(nickname=nickname).first()
+    u = User.query.filter_by(nickname=nickname).first()
 
-    if user is None:
+    if u is None:
         flash('User ' + nickname + ' not found')
 
         return redirect(url_for('index'))
 
     posts = [
-        {'author': user, 'body': 'Test post #1'},
-        {'author': user, 'body': 'Test post #2'}
+        {'author': u, 'body': 'Test post #1'},
+        {'author': u, 'body': 'Test post #2'}
     ]
 
     return render_template('user.html',
-                           user=user,
+                           user=u,
                            posts=posts)
 
 
 @app.route('/edit', methods=['GET', 'POST'])
 @login_required
 def edit():
-    form = EditForm()
+    form = EditForm(g.user.nickname)
 
     if form.validate_on_submit():
         g.user.nickname = form.nickname.data
@@ -135,3 +137,15 @@ def edit():
         form.about_me.data = g.user.about_me
 
     return render_template('edit.html', form=form)
+
+
+@app.errorhandler(404)
+def internal_error(error):
+    return render_template('404.html'), 404
+
+
+@app.errorhandler(500)
+def internal_error(error):
+    db.session.rollback()
+
+    return render_template('500.html'), 500
