@@ -4,12 +4,14 @@ from flask.ext.login import login_user, logout_user, current_user, login_require
 from app import app, lm, db, oid
 from forms import LoginForm, EditForm, PostForm
 from models import User, ROLE_USER, ROLE_ADMIN, Post
+from config import POSTS_PER_PAGE
 
 
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
+@app.route('/index/<int:page>', methods=['GET', 'POST'])
 @login_required
-def index():
+def index(page=1):
     form = PostForm()
     if form.validate_on_submit():
         post = Post(body=form.post.data,
@@ -23,7 +25,7 @@ def index():
         return redirect(url_for('index'))
 
     user = g.user
-    posts = user.followed_posts().all()
+    posts = user.followed_posts().paginate(page, POSTS_PER_PAGE, False)
 
     return render_template('index.html',
                            title='Home',
@@ -105,8 +107,9 @@ def logout():
 
 
 @app.route('/user/<nickname>')
+@app.route('/user/<nickname>/<int:page>')
 @login_required
-def user(nickname):
+def user(nickname, page=1):
     u = User.query.filter_by(nickname=nickname).first()
 
     if u is None:
@@ -114,10 +117,7 @@ def user(nickname):
 
         return redirect(url_for('index'))
 
-    posts = [
-        {'author': u, 'body': 'Test post #1'},
-        {'author': u, 'body': 'Test post #2'}
-    ]
+    posts = u.posts.paginate(page, POSTS_PER_PAGE, False)
 
     return render_template('user.html',
                            user=u,
