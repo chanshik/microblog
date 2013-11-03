@@ -2,30 +2,34 @@ from datetime import datetime
 from flask import render_template, flash, redirect, session, url_for, request, g
 from flask.ext.login import login_user, logout_user, current_user, login_required
 from app import app, lm, db, oid
-from forms import LoginForm, EditForm
-from models import User, ROLE_USER, ROLE_ADMIN
+from forms import LoginForm, EditForm, PostForm
+from models import User, ROLE_USER, ROLE_ADMIN, Post
 
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.post.data,
+                    timestamp=datetime.utcnow(),
+                    author=g.user)
+
+        db.session.add(post)
+        db.session.commit()
+
+        flash('Your post is now live!')
+        return redirect(url_for('index'))
+
     user = g.user
-    posts = [
-        {
-            'author': {'nickname': 'John'},
-            'body': 'Beautiful day in Portland!'
-        },
-        {
-            'author': {'nickname': 'Susan'},
-            'body': 'The Avengers movie was so cool!'
-        }
-    ]
+    posts = user.followed_posts().all()
 
     return render_template('index.html',
                            title='Home',
                            user=user,
-                           posts=posts)
+                           posts=posts,
+                           form=form)
 
 
 @app.before_request
@@ -63,17 +67,17 @@ def after_login(resp):
 
         return redirect(url_for('login'))
 
-    u = User.query.filter_by(email=resp.email).first()
-    if u is None:
+    user = User.query.filter_by(email=resp.email).first()
+    if user is None:
         nickname = resp.nickname
         if nickname is None or nickname == "":
             nickname = resp.email.split('@')[0]
 
         nickname = User.make_unique_nickname(nickname)
 
-        u = User(nickname=nickname, email=resp.email, role=ROLE_USER)
+        user = User(nickname=nickname, email=resp.email, role=ROLE_USER)
 
-        db.session.add(u)
+        db.session.add(user)
         db.session.commit()
 
         db.session.add(user.follow(user))
@@ -83,7 +87,7 @@ def after_login(resp):
         remember_me = session['remember_me']
         session.pop('remember_me', None)
 
-    login_user(u, remember=remember_me)
+    login_user(user, remember=remember_me)
 
     return redirect(request.args.get('next') or url_for('index'))
 
