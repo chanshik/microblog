@@ -5,6 +5,7 @@ from app import app, lm, db, oid
 from forms import LoginForm, EditForm, PostForm, SearchForm
 from models import User, ROLE_USER, ROLE_ADMIN, Post
 from config import POSTS_PER_PAGE, MAX_SEARCH_RESULTS
+from emails import follower_notification
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -155,6 +156,8 @@ def follow(nickname):
     db.session.add(u)
     db.session.commit()
 
+    follower_notification(user, g.user)
+
     flash('You are now following ' + nickname + '!')
     return redirect(url_for('user', nickname=nickname))
 
@@ -180,6 +183,7 @@ def unfollow(nickname):
 
     flash('You have stopped following ' + nickname + '.')
     return redirect(url_for('user', nickname=nickname))
+
 
 @app.errorhandler(404)
 def internal_error(error):
