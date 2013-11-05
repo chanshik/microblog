@@ -5,7 +5,7 @@
         </td>
         <td>
             <p><a href="{{ url_for('user', nickname=post.author.nickname) }}">{{ post.author.nickname }}</a> said
-                on {{ post.timestamp }}:</p>
+                on {{ momentjs(post.timestamp).fromNow() }}:</p>
 
             <p><strong>{{ post.body }}</strong></p>
         </td>

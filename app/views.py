@@ -108,7 +108,7 @@ def user(nickname, page=1):
 
         return redirect(url_for('index'))
 
-    posts = u.posts.paginate(page, POSTS_PER_PAGE, False)
+    posts = u.posts.order_by(Post.timestamp.desc()).paginate(page, POSTS_PER_PAGE, False)
 
     return render_template('user.html',
                            user=u,
