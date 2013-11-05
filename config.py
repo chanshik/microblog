@@ -36,3 +36,9 @@ MAIL_PASSWORD = ''
 
 # administrator list
 ADMINS = ['']
+
+# Available languages
+LANGUAGES = {
+    'en': 'English',
+    'es': 'Español'
+}

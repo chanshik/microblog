@@ -18,6 +18,9 @@ oid = OpenID(app, os.path.join(basedir, 'tmp'))
 from flask.ext.mail import Mail
 mail = Mail(app)
 
+from flask.ext.babel import Babel
+babel = Babel(app)
+
 from app import views, models
 
 if not app.debug:
