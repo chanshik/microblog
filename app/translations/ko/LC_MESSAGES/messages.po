@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-11-06 23:26+0900\n"
-"PO-Revision-Date: 2013-11-06 23:40+0900\n"
+"POT-Creation-Date: 2013-11-06 23:57+0900\n"
+"PO-Revision-Date: 2013-11-07 00:02+0900\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: ko <LL@li.org>\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
@@ -36,7 +36,15 @@ msgstr "로그인에 실패하였습니다. 다시 시도해 주세요."
 msgid "Home"
 msgstr "홈"
 
+#: app/templates/base.html:29
+msgid "Your Profile"
+msgstr "프로필"
+
+#: app/templates/base.html:30
+msgid "Logout"
+msgstr "로그아웃"
+
 #: app/templates/post.html:9
 #, python-format
 msgid "%(nickname)s said %(when)s:"
-msgstr "%(nickname)s 가 %(when)s"
+msgstr ""
