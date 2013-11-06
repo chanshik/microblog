@@ -1,4 +1,5 @@
 from hashlib import md5
+import re
 from app import app, db
 import flask.ext.whooshalchemy as whooshalchemy
 
@@ -58,6 +59,10 @@ class User(db.Model):
             version += 1
 
         return new_nickname
+
+    @staticmethod
+    def make_valid_nickname(nickname):
+        return re.sub('[^a-zA-Z0-9_\.]', '', nickname)
 
     def follow(self, user):
         if not self.is_following(user):

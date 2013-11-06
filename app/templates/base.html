@@ -24,7 +24,7 @@
             </a>
             <a class="brand" href="/">microblog</a>
             <ul class="nav">
-                <li><a href="{{ url_for('index') }}">Home</a></li>
+                <li><a href="{{ url_for('index') }}">{{ _('Home') }}</a></li>
                 {% if g.user.is_authenticated() %}
                     <li><a href="{{ url_for('user', nickname=g.user.nickname) }}">Your Profile</a></li>
                     <li><a href="{{ url_for('logout') }}">Logout</a></li>
