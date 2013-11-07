@@ -10,3 +10,4 @@ flask-wtf==0.8.4
 pytz==2013b
 flask-babel==0.8
 flup
+guess-language
