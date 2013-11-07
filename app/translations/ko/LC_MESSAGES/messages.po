@@ -7,21 +7,24 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2013-11-06 23:57+0900\n"
+"POT-Creation-Date: 2013-11-07 19:23+0900\n"
 "PO-Revision-Date: 2013-11-07 00:02+0900\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: ko <LL@li.org>\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Plural-Forms: nplurals=1; plural=0\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 1.3\n"
-"X-Generator: Poedit 1.5.7\n"
+
+#: app/__init__.py:23
+msgid "Please log in to access this page."
+msgstr "로그인이 필요한 페이지입니다."
 
 #: app/forms.py:30
 msgid ""
-"This nickname has invalid characters. Please use letters, numbers, dots and "
-"underscores only."
+"This nickname has invalid characters. Please use letters, numbers, dots "
+"and underscores only."
 msgstr "올바르지 않은 별명입니다. 문자, 숫자, '.', '_' 만을 사용해주세요."
 
 #: app/forms.py:37
@@ -32,15 +35,15 @@ msgstr "해당 별명은 이미 사용하고 있습니다. 다른 별명을 선�
 msgid "Invalid login. Please try again."
 msgstr "로그인에 실패하였습니다. 다시 시도해 주세요."
 
-#: app/templates/base.html:27
+#: app/templates/base.html:30
 msgid "Home"
 msgstr "홈"
 
-#: app/templates/base.html:29
+#: app/templates/base.html:32
 msgid "Your Profile"
 msgstr "프로필"
 
-#: app/templates/base.html:30
+#: app/templates/base.html:33
 msgid "Logout"
 msgstr "로그아웃"
 
@@ -48,3 +51,4 @@ msgstr "로그아웃"
 #, python-format
 msgid "%(nickname)s said %(when)s:"
 msgstr ""
+

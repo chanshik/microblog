@@ -18,8 +18,14 @@ oid = OpenID(app, os.path.join(basedir, 'tmp'))
 from flask.ext.mail import Mail
 mail = Mail(app)
 
-from flask.ext.babel import Babel
+from flask.ext.babel import Babel, lazy_gettext
+
 babel = Babel(app)
+lm.login_message = lazy_gettext('Please log in to access this page.')
+
+from momentjs import momentjs
+
+app.jinja_env.globals['momentjs'] = momentjs
 
 from app import views, models
 
@@ -54,7 +60,3 @@ if not app.debug:
 
     app.logger.addHandler(file_handler)
     app.logger.info('microblog startup')
-
-from momentjs import momentjs
-
-app.jinja_env.globals['momentjs'] = momentjs
