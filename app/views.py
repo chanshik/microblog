@@ -211,6 +211,8 @@ def before_request():
 
         g.search_form = SearchForm()
 
+    g.locale = get_locale()
+
 
 @app.route('/search', methods=['POST'])
 @login_required
