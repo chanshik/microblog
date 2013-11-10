@@ -11,11 +11,16 @@
                     when=momentjs(post.timestamp).fromNow()) }}
             </p>
             {% endautoescape %}
-            <p><strong>{{ post.body }}</strong></p>
-        </td>
-        <td>
+            <p><strong><span id="post{{ post.id }}">{{ post.body }}</span></strong></p>
             {% if post.language != None and post.language != '' and post.language != g.locale %}
-            <div><a href="#">{{ _('Translate') }}</a></div>
+            <div>
+                <span id="translation{{ post.id }}">
+                    <a href="javascript:translate('{{ post.language }}',
+                        '{{ g.locale }}', '#post{{ post.id }}',
+                        '#translation{{ post.id }}');">{{ _('Translate') }}
+                    </a>
+                </span>
+            </div>
             {% endif %}
         </td>
     </tr>

@@ -43,3 +43,6 @@ LANGUAGES = {
     'en': 'English',
     'es': 'Español'
 }
+
+MS_TRANSLATOR_CLIENT_ID='ee6ba84b-9a3c-43b3-a265-55fbfa778c8b'
+MS_TRANSLATOR_CLIENT_SECRET='AyIkB62OPDArWu1ks0j3UQXsbgbmTj6HvbOXaKk7JUo='
