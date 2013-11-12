@@ -256,3 +256,22 @@ def translate():
             request.form['destLang']
         )
     })
+
+
+@app.route('/delete/<int:id>')
+@login_required
+def delete(id):
+    post = Post.query.get(id)
+    if post == None:
+        flash('Post not found')
+        return redirect(url_for('index'))
+
+    if post.author.id != g.user.id:
+        flash('You cannot delete this post.')
+        return redirect(url_for('index'))
+
+    db.session.delete(post)
+    db.session.commit()
+
+    flash('Your post has been deleted.')
+    return redirect(url_for('index'))
